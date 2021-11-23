@@ -3,13 +3,13 @@
     <div class="item">
       <div class="item__text">
         <div class="list">
-          <p class="head__text-bold">#</p>
+          <p class="head__text-bold">ID</p>
           <p class="head__text-bold">Date</p>
           <p class="head__text-bold">Category</p>
           <p class="head__text-bold">Value</p>
         </div>
         <div class="list" v-for="(item, idx) in items" :key="idx">
-          <p class="head__text">{{ item.counter }}</p>
+          <p class="head__text">{{ item.id }}</p>
           <p class="head__text">{{ item.date }}</p>
           <p class="head__text">{{ item.category }}</p>
           <p class="head__text">{{ item.value }}</p>
