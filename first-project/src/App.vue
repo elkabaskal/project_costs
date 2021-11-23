@@ -1,10 +1,4 @@
 <template>
-<<<<<<< Updated upstream
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-=======
   <div id="app" class="container">
     <div class="wrapper">
       <header>My Personal Costs</header>
@@ -19,21 +13,11 @@
           @paginate="onChangePage"
         />
       </main>
->>>>>>> Stashed changes
     </div>
-    <router-view/>
+    <router-view />
   </div>
 </template>
 
-<<<<<<< Updated upstream
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-=======
 <script>
 import AddPaymentForm from "./components/AddPaymentForm.vue";
 import PaymentsDisplay from "./components/PaymentsDisplay.vue";
@@ -93,7 +77,6 @@ export default {
 }
 .wrapper {
   font-family: Arial, Helvetica, sans-serif;
->>>>>>> Stashed changes
 }
 
 #nav {
@@ -108,12 +91,10 @@ export default {
     }
   }
 }
-<<<<<<< Updated upstream
-</style>
-=======
+
 .total {
   margin-top: 10px;
   text-align: center;
 }
 </style>
->>>>>>> Stashed changes
+

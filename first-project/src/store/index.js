@@ -4,17 +4,6 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-<<<<<<< Updated upstream
-  state: {
-  },
-  mutations: {
-  },
-  actions: {
-  },
-  modules: {
-  }
-})
-=======
     state: {
         paymentsList: [],
         categoryList: [],
@@ -73,4 +62,3 @@ export default new Vuex.Store({
         getCategoryList: state => state.categoryList
     }
 })
->>>>>>> Stashed changes
