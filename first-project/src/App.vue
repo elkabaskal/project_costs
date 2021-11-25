@@ -6,10 +6,15 @@
         <add-payment-form @addNewPayment="onDataPaymentAdd" />
         <payments-display :items="currentElements" />
         <p class="total">Total: {{ getSumValue }}</p>
-        <pagination :cur="page" :n="3" :length="12" @paginate="onChangePage" />
+        <pagination
+          :cur="page"
+          :n="n"
+          :length="paymentsList.length"
+          @paginate="onChangePage"
+        />
       </main>
     </div>
-    <router-view />
+    <!-- <router-view /> -->
   </div>
 </template>
 
@@ -29,7 +34,7 @@ export default {
   data() {
     return {
       page: 1,
-      n: 3,
+      n: 10,
     };
   },
   computed: {
@@ -57,11 +62,11 @@ export default {
     },
     onChangePage(p) {
       this.page = p;
-      this.fetchData(p);
+      /*  this.fetchData(p); */
     },
   },
   created() {
-    this.fetchData(1);
+    this.fetchData();
   },
 };
 </script>

@@ -15,7 +15,9 @@
         class="add__text"
         placeholder="Payment Catgory"
       >
-        <option v-for="option in options" :key="option">{{ option }}</option>
+        <option v-for="option in options" :key="option">
+          {{ option }}
+        </option>
       </select>
 
       <input
@@ -31,6 +33,24 @@
       >
         ADD +
       </button>
+      <div>
+        <div class="new__cat">
+          <input
+            class="add__text--cat"
+            placeholder="Input New Category"
+            v-model="categoryNew"
+            type="text"
+          />
+          <button
+            class="btn__form--cat"
+            @click="addNewCategory"
+            v-bind:disabled="categoryNew === ''"
+          >
+            ADD New Caterory
+          </button>
+        </div>
+        <p class="err" v-show="visible">ERROR!<br>This category has been added.<br>Please enter a new one!</p>
+      </div>
     </div>
   </div>
 </template>
@@ -38,16 +58,16 @@
 <script>
 export default {
   name: "AddPaymentForm",
-  props: {
-    /* counter: Number, */
-  },
+  props: {},
   data() {
     return {
-      /* counter: Number, */
       date: "",
       category: "",
+      categoryNew: "",
       value: "",
       checked: false,
+      counter: 0,
+      visible: false,
     };
   },
   computed: {
@@ -64,14 +84,27 @@ export default {
   },
   methods: {
     onSaveClick() {
+      this.counter++;
       const data = {
-        counter: this.counter,
+        id: this.counter,
         date: this.date || this.getCurrentDate,
         category: this.category,
         value: +this.value,
       };
       this.$emit("addNewPayment", data);
-      /*      console.log(this.counter); */
+    },
+    addNewCategory() {
+      const data = this.categoryNew;
+      let check = this.options.every(function (el) {
+        return data !== el
+      });
+      if (check == true) {
+      this.visible = false;
+      this.options.push(data);
+      this.$emit("addDataToCategoryList", this.data);
+      } else {
+        this.visible = true;
+      }
     },
   },
   mounted() {
@@ -105,11 +138,32 @@ export default {
 .add__text {
   margin-bottom: 5px;
 }
+.add__text--cat {
+  margin-bottom: 5px;
+  width: 50%;
+}
 
 .btn__form {
   background-color: #00a89b;
   color: #90f4f0;
   padding: 5px 5px;
   margin: 10px 0;
+}
+.btn__form--cat {
+  background-color: #00a89b;
+  color: #90f4f0;
+  padding: 5px 5px;
+  margin: 10px 0 0 5px;
+  width: 40%;
+}
+.new__cat {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.err{
+  color: red;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
 }
 </style>

@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
-export const localDB = {
+/* export const localDB = {
     page1: [
         { id: 1, date: '20.03.2020', category: 'Food', value: 169 },
         { id: 2, date: '21.03.2020', category: 'Navigation', value: 50 },
@@ -24,48 +24,43 @@ export const localDB = {
         { id: 11, date: '24.03.2020', category: 'Education', value: 1500 },
         { id: 12, date: '25.03.2020', category: 'Food', value: 200 }
     ]
-}
+} */
 
 export default new Vuex.Store({
     state: {
         paymentsList: [],
         categoryList: [],
-        paymentsListIDS: [],
+        /*  paymentsListIDS: [], */
     },
     mutations: {
         setPaymentsListData(state, payload) {
-            const newUniwIdsObj = payload.filter((item) => {
-                return state.paymentsListIDS.indexOf(item.id) < 0
-            })
-            const uniqIds = newUniwIdsObj.map(obj => obj.id)
-            state.paymentsList.push(...newUniwIdsObj)
-            state.paymentsListIDS.push(...uniqIds)
+            state.paymentsList = payload
         },
         setPaymentsCategoryList(state, payload) {
             state.categoryList = payload
         },
         addDataToPaymentsList(store, data) {
             store.paymentsList.push(data)
+        },
+        addDataToCategoryList(state, data) {
+            state.categoryList.push(data)
         }
+
     },
     actions: {
-        fetchData({ commit }, page) {
+        fetchData({ commit }) {
             return new Promise((resolve) => {
-                setTimeout(() => {
-                    const items = localDB[`page${page}`]
-                    resolve(items)
-                }, 0)
+                const items = [];
+                resolve(items)
             }).then(res => {
-
+                // dispatch('fetchCategory')
                 commit('setPaymentsListData', res)
             })
         },
         fetchCategory({ commit }) {
             return new Promise((resolve) => {
-                setTimeout(() => {
-                    const items = ['Sport', 'Education', 'Food', 'Internet', 'Auto', 'Adventure']
-                    resolve(items)
-                }, 0)
+                const items = ['Sport', 'Education', 'Food', 'Internet', 'Auto', 'Adventure']
+                resolve(items)
             }).then(res => commit('setPaymentsCategoryList', res))
         }
     },
