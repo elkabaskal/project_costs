@@ -53,7 +53,6 @@ export default new Vuex.Store({
                 const items = [];
                 resolve(items)
             }).then(res => {
-                // dispatch('fetchCategory')
                 commit('setPaymentsListData', res)
             })
         },

@@ -22,7 +22,6 @@
 <script>
 export default {
   name: "PaymentsDisplay",
-
   props: {
     items: {
       type: Array,
@@ -31,6 +30,7 @@ export default {
   },
   methods: {},
   computed: {},
+  created() {},
 };
 </script>
  
