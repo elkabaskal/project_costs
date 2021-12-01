@@ -35,6 +35,11 @@ export default {
         name: "Add",
       });
     },
+    /*  openAddPaymentForm() {
+      this.$modal.show("Add", {
+        title: "Add new Cost",
+      });
+    }, */
 
     onDataPaymentAdd(data) {
       this.addData(data);

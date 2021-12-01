@@ -8,14 +8,29 @@
     <div class="content">
       <router-view />
     </div>
+    <modal-window-add-payment-form
+      :componentName="componentName"
+      :settings="modalSetting"
+      v-if="componentName"
+    />
   </div>
 </template>
 <script>
 export default {
   name: "App",
+  components: {
+    ModalWindowAddPaymentForm: () =>
+      import(
+        /*webpackChunkName: "Modal"*/ "./components/ModalWindowAddPaymentForm.vue"
+      ),
+  },
   props: {},
   data() {
-    return {};
+    return {
+      addShowForm: false,
+      modalSetting: {},
+      componentName: "",
+    };
   },
   methods: {
     /* goTopageNotFound() {
@@ -24,11 +39,24 @@ export default {
         name: "NotFound",
       });
     }, */
+    onShown(propsData) {
+      const { settings, name } = propsData;
+      this.componentName = name;
+      this.modalSetting = settings;
+    },
+    onHide() {
+      this.modalSetting = {};
+      this.componentName = "";
+    },
   },
   /*  created() {
     this.$router.push({ name: "Home" });
     this.setPaymentsListData(this.fetchData());
   }, */
+  mounted() {
+    this.$modal.EventBus.$on("shown", this.onShown);
+    this.$modal.EventBus.$on("hide", this.onHide);
+  },
 };
 </script>
 
@@ -40,5 +68,6 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+  position: relative;
 }
 </style>

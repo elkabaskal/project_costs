@@ -86,9 +86,10 @@ export default {
   computed: {
     getCurrentDate() {
       const today = new Date();
-      const d = today.getDate();
+      let d = today.getDate();
       const m = today.getMonth() + 1;
       const y = today.getFullYear();
+      if (d < 10) d = "0" + d;
       return `${y}-${m}-${d}`;
     },
     options() {
@@ -180,7 +181,7 @@ export default {
 .block__for__add {
   position: absolute;
   left: 400px;
-  top: 150px;
+  top: 160px;
   display: flex;
   align-items: center;
 }

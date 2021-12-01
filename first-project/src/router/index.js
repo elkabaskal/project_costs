@@ -1,30 +1,30 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
-import Dashboard from '../views/Dashboard.vue'
-import About from '../views/About.vue'
-import NotFound from '../views/NotFound.vue'
-import Add from '../views/Add.vue'
-
-
-
+/* import Home from '../views/Home.vue' */
+/* import Dashboard from '../views/Dashboard.vue' */
+/* import About from '../views/About.vue' */
+/* import NotFound from '../views/NotFound.vue' */
+/* import Add from '../views/Add.vue' */
 
 Vue.use(VueRouter)
 
 const routes = [{
         path: '/home',
         name: "Home",
-        component: Home
+        component: () =>
+            import ( /*webpackChunkName: "Home" */ '../views/Home.vue'),
     },
 
     {
         path: '/dashboard',
         name: "Dashboard",
-        component: Dashboard,
+        component: () =>
+            import ( /*webpackChunkName: "Dashboard" */ '../views/Dashboard.vue'),
         children: [{
             path: 'add',
             name: "Add",
-            component: Add
+            component: () =>
+                import ( /*webpackChunkName: "Add" */ '../views/Add.vue'),
         }]
 
     },
@@ -32,12 +32,14 @@ const routes = [{
     {
         path: '/about',
         name: "About",
-        component: About
+        component: () =>
+            import ( /*webpackChunkName: "About" */ '../views/About.vue')
     },
     {
         path: '/notfound',
         name: "NotFound",
-        component: NotFound,
+        component: () =>
+            import ( /*webpackChunkName: "NotFound" */ '../views/NotFound.vue')
     },
     {
         path: '*',

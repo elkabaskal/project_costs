@@ -7,12 +7,14 @@
           <p class="head__text-bold">Date</p>
           <p class="head__text-bold">Category</p>
           <p class="head__text-bold">Value</p>
+          <p class="head__text-bold">Menu</p>
         </div>
         <div class="list" v-for="(item, idx) in items" :key="idx">
           <p class="head__text">{{ item.id }}</p>
           <p class="head__text">{{ item.date }}</p>
           <p class="head__text">{{ item.category }}</p>
           <p class="head__text">{{ item.value }}</p>
+          <p class="head__text">...</p>
         </div>
       </div>
     </div>

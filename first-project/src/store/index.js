@@ -3,34 +3,10 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
-/* export const localDB = {
-    page1: [
-        { id: 1, date: '20.03.2020', category: 'Food', value: 169 },
-        { id: 2, date: '21.03.2020', category: 'Navigation', value: 50 },
-        { id: 3, date: '22.03.2020', category: 'Sport', value: 450 }
-    ],
-    page2: [
-        { id: 4, date: '23.03.2020', category: 'Entertaiment', value: 969 },
-        { id: 5, date: '24.03.2020', category: 'Education', value: 1500 },
-        { id: 6, date: '25.03.2020', category: 'Food', value: 200 }
-    ],
-    page3: [
-        { id: 7, date: '23.03.2020', category: 'Internet', value: 890 },
-        { id: 8, date: '24.03.2020', category: 'Education', value: 1400 },
-        { id: 9, date: '25.03.2020', category: 'Auto', value: 700 }
-    ],
-    page4: [
-        { id: 10, date: '23.03.2020', category: 'Adventure', value: 1700 },
-        { id: 11, date: '24.03.2020', category: 'Education', value: 1500 },
-        { id: 12, date: '25.03.2020', category: 'Food', value: 200 }
-    ]
-} */
-
 export default new Vuex.Store({
     state: {
         paymentsList: [],
         categoryList: [],
-        /*  paymentsListIDS: [], */
     },
     mutations: {
         setPaymentsListData(state, payload) {
@@ -48,14 +24,34 @@ export default new Vuex.Store({
 
     },
     actions: {
+        /*    fetchData({ commit }) {
+               return new Promise((resolve) => {
+                   const items = [];
+                   resolve(items)
+               }).then(res => {
+                   commit('setPaymentsListData', res)
+               })
+           }, */
+
         fetchData({ commit }) {
             return new Promise((resolve) => {
-                const items = [];
+
+                const items = []
+                for (let i = 1; i < 10; i++) {
+                    items.push({
+                        id: i,
+                        date: '2021-11-10',
+                        category: 'Education',
+                        value: i * 10
+                    })
+                }
                 resolve(items)
+
             }).then(res => {
                 commit('setPaymentsListData', res)
             })
         },
+
         fetchCategory({ commit }) {
             return new Promise((resolve) => {
                 const items = ['Sport', 'Education', 'Food', 'Internet', 'Auto', 'Adventure']
@@ -68,6 +64,6 @@ export default new Vuex.Store({
             return state.paymentsList.reduce((res, cur) => res + cur.value, 0)
         },
         getPaymnetsList: state => state.paymentsList,
-        getCategoryList: state => state.categoryList
+        getCategoryList: state => state.categoryList,
     }
 })
