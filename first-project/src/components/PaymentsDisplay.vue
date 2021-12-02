@@ -14,7 +14,13 @@
           <p class="head__text">{{ item.date }}</p>
           <p class="head__text">{{ item.category }}</p>
           <p class="head__text">{{ item.value }}</p>
-          <p class="head__text">...</p>
+          <p
+            class="head__text context"
+            id="contextwindow"
+            @click="onOpenContextMenu"
+          >
+            ...
+          </p>
         </div>
       </div>
     </div>
@@ -24,15 +30,28 @@
 <script>
 export default {
   name: "PaymentsDisplay",
+  data() {
+    return {
+      change: true,
+    };
+  },
+
   props: {
     items: {
       type: Array,
       default: () => [],
     },
   },
-  methods: {},
-  computed: {},
-  created() {},
+  methods: {
+    onOpenContextMenu() {
+      this.$context.showMenu("ContextMenu", {
+        title: "Context menu",
+      });
+      this.x = event.pageX;
+      this.y = event.pageY;
+      console.log(this.x, this.y);
+    },
+  },
 };
 </script>
  
@@ -49,5 +68,9 @@ export default {
 
 .head__text-bold {
   font-weight: bold;
+}
+
+.context {
+  cursor: pointer;
 }
 </style>

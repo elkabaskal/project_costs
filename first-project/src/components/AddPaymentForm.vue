@@ -33,6 +33,7 @@ export default {
     goToPageAdd() {
       this.$router.push({
         name: "Add",
+        type: "Addition",
       });
     },
     /*  openAddPaymentForm() {

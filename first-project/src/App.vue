@@ -13,6 +13,13 @@
       :settings="modalSetting"
       v-if="componentName"
     />
+    <transition name="fade">
+      <context-window-menu
+        :Name="Name"
+        :settings="contextSetting"
+        v-if="Name"
+      />
+    </transition>
   </div>
 </template>
 <script>
@@ -20,16 +27,14 @@ export default {
   name: "App",
   components: {
     ModalWindowAddPaymentForm: () =>
-      import(
-        /*webpackChunkName: "Modal"*/ "./components/ModalWindowAddPaymentForm.vue"
-      ),
+      import("./components/ModalWindowAddPaymentForm.vue"),
+    ContextWindowMenu: () => import("./components/ContextWindowMenu.vue"),
   },
-  props: {},
   data() {
     return {
-      addShowForm: false,
-      modalSetting: {},
+      contextSetting: {},
       componentName: "",
+      Name: "",
     };
   },
   methods: {
@@ -48,7 +53,23 @@ export default {
       this.modalSetting = {};
       this.componentName = "";
     },
+
+    onShownMenu(propsData) {
+      const { settings, name } = propsData;
+      this.Name = name;
+      this.contextSetting = settings;
+    },
+    onDelData() {
+      this.contextSetting = {};
+      this.Name = "";
+    },
+
+    onEditData() {
+      this.contextSetting = {};
+      this.Name = "";
+    },
   },
+
   /*  created() {
     this.$router.push({ name: "Home" });
     this.setPaymentsListData(this.fetchData());
@@ -56,6 +77,9 @@ export default {
   mounted() {
     this.$modal.EventBus.$on("shown", this.onShown);
     this.$modal.EventBus.$on("hide", this.onHide);
+    this.$context.EventBus.$on("shownMenu", this.onShownMenu);
+    this.$context.EventBus.$on("delData", this.onDelData);
+    this.$context.EventBus.$on("editData", this.onEditData);
   },
 };
 </script>
@@ -69,5 +93,14 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
   position: relative;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.8s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>

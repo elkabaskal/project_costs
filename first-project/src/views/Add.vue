@@ -86,11 +86,11 @@ export default {
   computed: {
     getCurrentDate() {
       const today = new Date();
-      let d = today.getDate();
+      let day = today.getDate();
       const m = today.getMonth() + 1;
       const y = today.getFullYear();
-      if (d < 10) d = "0" + d;
-      return `${y}-${m}-${d}`;
+      if (day < 10) day = "0" + day;
+      return `${y}-${m}-${day}`;
     },
     options() {
       return this.$store.getters.getCategoryList;
@@ -168,6 +168,7 @@ export default {
   border: 2px #00a89b solid;
   padding: 10px;
   background-color: white;
+  box-shadow: 0.1em 0.1em 0.5em 0.5em rgba(81, 90, 90, 0.2);
 }
 
 .add__text {

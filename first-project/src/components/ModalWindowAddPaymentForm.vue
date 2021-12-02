@@ -15,7 +15,6 @@
 <script>
 export default {
   components: {
-    /* Add: () => import("../views/Add.vue"), */
     AuthForm: () => import("./AuthForm.vue"),
   },
   props: {
@@ -42,6 +41,7 @@ export default {
   background-color: white;
   left: 33%;
   top: 180px;
+  box-shadow: 0.1em 0.1em 0.5em 0.5em rgba(81, 90, 90, 0.2);
 }
 .btn__form--cat {
   background-color: #00a89b;

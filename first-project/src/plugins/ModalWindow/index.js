@@ -15,7 +15,7 @@ export default {
 
             hide() {
                 this.EventBus.$emit('hide')
-            }
+            },
         }
     }
 }
