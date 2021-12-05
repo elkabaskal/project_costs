@@ -20,7 +20,11 @@ export default new Vuex.Store({
         },
         addDataToCategoryList(state, data) {
             state.categoryList.push(data)
+        },
+        editDataToPaymentsList(state, payload) {
+            Vue.set(state.paymentsList, 0, payload)
         }
+
 
     },
     actions: {

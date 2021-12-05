@@ -5,19 +5,23 @@ export default {
         }
 
         this.installed = true
+        this.caller = null
 
         Vue.prototype.$context = {
             EventBus: new Vue(),
 
-            showMenu(name, settings) {
-                this.EventBus.$emit('shownMenu', { name, settings })
+            show({ event, items }) {
+                const caller = event.target
+                if (caller !== this.caller) {
+                    this.caller = caller
+                    this.EventBus.$emit('shown', { items, caller })
+                } else {
+                    this.close()
+                }
             },
 
-            delData() {
-                this.EventBus.$emit('delData')
-            },
-            editData() {
-                this.EventBus.$emit('editData')
+            close() {
+                this.EventBus.$emit('close')
             }
         }
     }

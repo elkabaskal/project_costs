@@ -225,10 +225,4 @@ export default {
   justify-content: space-between;
   align-items: center;
 }
-
-.err {
-  color: red;
-  font-family: Arial, Helvetica, sans-serif;
-  font-weight: bold;
-}
 </style>

@@ -1,28 +1,20 @@
 <template>
-  <div class="table">
-    <div class="item">
-      <div class="item__text">
-        <div class="list">
-          <p class="head__text-bold">ID</p>
-          <p class="head__text-bold">Date</p>
-          <p class="head__text-bold">Category</p>
-          <p class="head__text-bold">Value</p>
-          <p class="head__text-bold">Menu</p>
-        </div>
-        <div class="list" v-for="(item, idx) in items" :key="idx">
-          <p class="head__text">{{ item.id }}</p>
-          <p class="head__text">{{ item.date }}</p>
-          <p class="head__text">{{ item.category }}</p>
-          <p class="head__text">{{ item.value }}</p>
-          <p
-            class="head__text context"
-            id="contextwindow"
-            @click="onOpenContextMenu"
-          >
-            ...
-          </p>
-        </div>
-      </div>
+  <div class="item">
+    <div class="list">
+      <p class="head__text-bold">ID</p>
+      <p class="head__text-bold">Date</p>
+      <p class="head__text-bold">Category</p>
+      <p class="head__text-bold">Value</p>
+      <p class="head__text-bold">Menu</p>
+    </div>
+    <div class="list" v-for="(item, idx) in items" :key="idx">
+      <p class="head__text">{{ item.id }}</p>
+      <p class="head__text">{{ item.date }}</p>
+      <p class="head__text">{{ item.category }}</p>
+      <p class="head__text">{{ item.value }}</p>
+      <p class="head__text context" @click="onClickContextItem($event, item)">
+        ...
+      </p>
     </div>
   </div>
 </template>
@@ -33,6 +25,10 @@ export default {
   data() {
     return {
       change: true,
+      date: "",
+      category: "",
+      categoryNew: "",
+      value: "",
     };
   },
 
@@ -43,13 +39,36 @@ export default {
     },
   },
   methods: {
-    onOpenContextMenu() {
-      this.$context.showMenu("ContextMenu", {
-        title: "Context menu",
-      });
-      this.x = event.pageX;
-      this.y = event.pageY;
-      console.log(this.x, this.y);
+    deleteItem(item) {
+      /*  const data = {
+        id: item.id,
+        date: item.date,
+        category: item.category,
+        value: item.value,
+      }; */
+      this.items.splice(item.id - 1, 1);
+      /* this.$emit("editDataToPaymentsList", this.data); */
+      console.log(item);
+    },
+    onClickContextItem(event, item) {
+      const items = [
+        {
+          text: "Edit",
+          action: () => {
+            this.$router.push({
+              name: "Add",
+              type: "Edition",
+            });
+          },
+        },
+        {
+          text: "Delete",
+          action: () => {
+            this.deleteItem(item);
+          },
+        },
+      ];
+      this.$context.show({ event, items });
     },
   },
 };

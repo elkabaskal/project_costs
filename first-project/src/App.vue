@@ -8,42 +8,37 @@
     <div class="content">
       <router-view />
     </div>
-    <modal-window-add-payment-form
-      :componentName="componentName"
-      :settings="modalSetting"
-      v-if="componentName"
-    />
     <transition name="fade">
-      <context-window-menu
-        :Name="Name"
-        :settings="contextSetting"
-        v-if="Name"
+      <modal-window-add-payment-form
+        :componentName="componentName"
+        :settings="modalSetting"
+        v-if="componentName"
       />
+    </transition>
+    <transition name="fade">
+      <context-menu />
     </transition>
   </div>
 </template>
 <script>
+import ContextMenu from "./components/ContextMenu.vue";
 export default {
   name: "App",
   components: {
     ModalWindowAddPaymentForm: () =>
-      import("./components/ModalWindowAddPaymentForm.vue"),
-    ContextWindowMenu: () => import("./components/ContextWindowMenu.vue"),
+      import(
+        /*webpackChunkName: "Modal"*/ "./components/ModalWindowAddPaymentForm.vue"
+      ),
+    ContextMenu,
   },
   data() {
     return {
-      contextSetting: {},
+      addShowForm: false,
+      modalSetting: {},
       componentName: "",
-      Name: "",
     };
   },
   methods: {
-    /* goTopageNotFound() {
-      if (this.$route.name === "NotFound") return;
-      this.$router.push({
-        name: "NotFound",
-      });
-    }, */
     onShown(propsData) {
       const { settings, name } = propsData;
       this.componentName = name;
@@ -53,33 +48,11 @@ export default {
       this.modalSetting = {};
       this.componentName = "";
     },
-
-    onShownMenu(propsData) {
-      const { settings, name } = propsData;
-      this.Name = name;
-      this.contextSetting = settings;
-    },
-    onDelData() {
-      this.contextSetting = {};
-      this.Name = "";
-    },
-
-    onEditData() {
-      this.contextSetting = {};
-      this.Name = "";
-    },
   },
 
-  /*  created() {
-    this.$router.push({ name: "Home" });
-    this.setPaymentsListData(this.fetchData());
-  }, */
   mounted() {
     this.$modal.EventBus.$on("shown", this.onShown);
     this.$modal.EventBus.$on("hide", this.onHide);
-    this.$context.EventBus.$on("shownMenu", this.onShownMenu);
-    this.$context.EventBus.$on("delData", this.onDelData);
-    this.$context.EventBus.$on("editData", this.onEditData);
   },
 };
 </script>

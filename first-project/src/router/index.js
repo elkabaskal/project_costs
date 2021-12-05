@@ -1,10 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-/* import Home from '../views/Home.vue' */
-/* import Dashboard from '../views/Dashboard.vue' */
-/* import About from '../views/About.vue' */
-/* import NotFound from '../views/NotFound.vue' */
-/* import Add from '../views/Add.vue' */
 
 Vue.use(VueRouter)
 

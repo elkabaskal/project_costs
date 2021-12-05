@@ -5,7 +5,9 @@
         ADD NEW COST +
       </button>
     </div>
-    <router-view @addNewPayment="onDataPaymentAdd" />
+    <transition name="fade">
+      <router-view @addNewPayment="onDataPaymentAdd" />
+    </transition>
   </div>
 </template>
 
@@ -74,5 +76,19 @@ export default {
   width: 22%;
   cursor: pointer;
   left: 0;
+}
+.err {
+  color: red;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.8s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>

@@ -51,9 +51,14 @@ export default {
     ...mapMutations({
       setData: "setPaymentsListData",
       addData: "addDataToPaymentsList",
+      editData: "editDataToPaymentsList",
     }),
 
     ...mapActions(["fetchData"]),
+
+    onEditPayment(data) {
+      this.editData(data);
+    },
 
     onDataPaymentAdd(data) {
       this.addData(data);
