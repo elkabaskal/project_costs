@@ -1,9 +1,9 @@
 <template>
-  <div id="app" class="container">
+  <div class="container">
     <header>My Personal Costs</header>
     <main>
-      <add-payment-form />
-      <payments-display :items="currentElements" @editPay="editPay" />
+      <add-payment-form @addNewPayment="onDataPaymentAdd" />
+      <payments-display :items="currentElements" />
       <p class="total">Total: {{ getSumValue }}</p>
       <pagination
         :cur="page"
@@ -33,6 +33,7 @@ export default {
     return {
       page: 1,
       n: 7,
+      type: String,
     };
   },
   computed: {
@@ -55,10 +56,6 @@ export default {
     }),
 
     ...mapActions(["fetchData"]),
-
-    editPay(item, type) {
-      console.log(item, type);
-    },
 
     onDataPaymentAdd(data) {
       this.addData(data);

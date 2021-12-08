@@ -5,7 +5,7 @@
       <router-link to="/dashboard">Dashboard</router-link> /
       <router-link to="/about">About</router-link>
     </header>
-    <div class="content">
+    <div>
       <router-view />
     </div>
     <transition name="fade">

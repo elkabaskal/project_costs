@@ -21,9 +21,9 @@ export default new Vuex.Store({
         addDataToCategoryList(state, data) {
             state.categoryList.push(data)
         },
-        editDataToPaymentsList(state, item) {
-            var edit = state.paymentsList.findIndex(idx => idx.id == item.id);
-            state.paymentsList.splice(edit, 1, item)
+        editDataToPaymentsList(state, editData) {
+            var edit = state.paymentsList.findIndex(idx => idx.id == editData.id);
+            state.paymentsList.splice(edit, 1, editData)
         },
         deletePayment(state, item) {
             var index = state.paymentsList.findIndex(idx => idx.id == item.id);
