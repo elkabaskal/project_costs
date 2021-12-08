@@ -1,9 +1,7 @@
 <template>
   <div>
     <div class="payment-content">
-      <button id="1" class="btn__form" @click="goToPageAdd">
-        ADD NEW COST +
-      </button>
+      <button class="btn__form" @click="goToPageAdd">ADD NEW COST +</button>
     </div>
     <transition name="fade">
       <router-view @addNewPayment="onDataPaymentAdd" />
@@ -13,18 +11,13 @@
 
 <script>
 import { mapMutations } from "vuex";
+
 export default {
   name: "AddPaymentForm",
+
   props: {},
   data() {
-    return {
-      date: "",
-      category: "",
-      categoryNew: "",
-      value: "",
-      counter: 0,
-      visible: false,
-    };
+    return {};
   },
   computed: {
     options() {
@@ -35,14 +28,8 @@ export default {
     goToPageAdd() {
       this.$router.push({
         name: "Add",
-        type: "Addition",
       });
     },
-    /*  openAddPaymentForm() {
-      this.$modal.show("Add", {
-        title: "Add new Cost",
-      });
-    }, */
 
     onDataPaymentAdd(data) {
       this.addData(data);
@@ -77,11 +64,7 @@ export default {
   cursor: pointer;
   left: 0;
 }
-.err {
-  color: red;
-  font-family: Arial, Helvetica, sans-serif;
-  font-weight: bold;
-}
+
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.8s;

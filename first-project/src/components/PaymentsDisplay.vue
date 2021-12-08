@@ -12,7 +12,10 @@
       <p class="head__text">{{ item.date }}</p>
       <p class="head__text">{{ item.category }}</p>
       <p class="head__text">{{ item.value }}</p>
-      <p class="head__text context" @click="onClickContextItem($event, item)">
+      <p
+        class="head__text context"
+        @click="onClickContextItem($event, item, type)"
+      >
         ...
       </p>
     </div>
@@ -22,6 +25,7 @@
 <script>
 export default {
   name: "PaymentsDisplay",
+
   data() {
     return {
       change: true,
@@ -29,6 +33,7 @@ export default {
       category: "",
       categoryNew: "",
       value: "",
+      type: "edit",
     };
   },
 
@@ -40,25 +45,21 @@ export default {
   },
   methods: {
     deleteItem(item) {
-      /*  const data = {
-        id: item.id,
-        date: item.date,
-        category: item.category,
-        value: item.value,
-      }; */
-      this.items.splice(item.id - 1, 1);
-      /* this.$emit("editDataToPaymentsList", this.data); */
-      console.log(item);
+      this.$store.commit("deletePayment", item);
     },
-    onClickContextItem(event, item) {
+    editItem(item, type) {
+      this.$router.push({
+        name: "Add",
+      });
+      this.$emit("editPay", item, type);
+    },
+
+    onClickContextItem(event, item, type) {
       const items = [
         {
           text: "Edit",
           action: () => {
-            this.$router.push({
-              name: "Add",
-              type: "Edition",
-            });
+            this.editItem(item, type);
           },
         },
         {

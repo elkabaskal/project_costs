@@ -26,7 +26,7 @@
         />
         <button
           class="btn__form--cat"
-          @click="onSaveClick"
+          @click="onSaveClick(type)"
           v-bind:disabled="category === '' || value < 0 || value === ''"
         >
           ADD +
@@ -71,16 +71,21 @@
 <script>
 export default {
   name: "Add",
-  props: {},
+  components: {},
+  props: {
+    item: Object,
+    type: String,
+  },
   data() {
     return {
       date: "",
       category: "",
       categoryNew: "",
       value: "",
-      counter: 0,
+      counter: 9,
       visible: false,
       payid: Number,
+      //type: "edit", //переключатель режима редактирования-добавления
     };
   },
   computed: {
@@ -97,11 +102,29 @@ export default {
     },
   },
   methods: {
-    onSaveClick() {
+    onSaveClick(type) {
       this.visible = false;
       this.categoryNew = "";
+      console.log(type);
+      if (type === "edit") {
+        this.editData();
+      } else {
+        this.addNew();
+      }
+    },
+
+    editData() {
+      let item = {
+        id: 2,
+        date: this.date || this.getCurrentDate,
+        category: this.category,
+        value: +this.value,
+      };
+      this.$store.commit("editDataToPaymentsList", item);
+    },
+    addNew() {
       this.counter++;
-      const data = {
+      let data = {
         id: this.counter,
         date: this.date || this.getCurrentDate,
         category: this.category,
@@ -149,6 +172,7 @@ export default {
       }
     },
   },
+
   mounted() {
     if (!this.category?.length) {
       this.$store.dispatch("fetchCategory");
@@ -218,6 +242,11 @@ export default {
   margin: 5px 5px;
   width: 40%;
   cursor: pointer;
+}
+.err {
+  color: red;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
 }
 
 .new__cat {

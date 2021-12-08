@@ -3,7 +3,7 @@
     <header>My Personal Costs</header>
     <main>
       <add-payment-form />
-      <payments-display :items="currentElements" />
+      <payments-display :items="currentElements" @editPay="editPay" />
       <p class="total">Total: {{ getSumValue }}</p>
       <pagination
         :cur="page"
@@ -56,8 +56,8 @@ export default {
 
     ...mapActions(["fetchData"]),
 
-    onEditPayment(data) {
-      this.editData(data);
+    editPay(item, type) {
+      console.log(item, type);
     },
 
     onDataPaymentAdd(data) {
@@ -67,6 +67,7 @@ export default {
       this.page = p;
     },
   },
+
   created() {
     this.fetchData();
   },
