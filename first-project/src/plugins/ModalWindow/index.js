@@ -1,4 +1,4 @@
-export default {
+/* export default {
     install(Vue) {
         if (this.installed) {
             return
@@ -18,4 +18,4 @@ export default {
             },
         }
     }
-}
+} */

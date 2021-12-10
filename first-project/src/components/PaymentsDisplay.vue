@@ -1,93 +1,136 @@
 <template>
-  <div>
-    <div class="item">
-      <div class="block__for__add" v-show="checked">
-        <div class="add__form">
-          <button class="btn__form--close" @click="btnFormClose">
-            Close the form
-          </button>
-          <input
-            type="date"
-            class="add__text"
-            placeholder="Payment Date"
-            v-model="date"
-          />
-          <select v-model="category" class="add__text">
-            <option disabled>Payment Catgory</option>
-            <option v-for="option in options" :key="option">
-              {{ option }}
-            </option>
-          </select>
-          <input
-            class="add__text"
-            placeholder="Payment Value"
-            v-model.number="value"
-            type="number"
-          />
-          <button
-            class="btn__form--cat"
-            @click="onEditClick"
-            v-bind:disabled="category === '' || value < 0 || value === ''"
-          >
-            EDIT PAY
-          </button>
-          <div>
-            <div class="new__cat">
-              <button
-                class="btn__form--cat"
-                @click="addNewCategory"
-                v-bind:disabled="categoryNew === ''"
+  <v-data-table
+    :headers="headers"
+    :items="items"
+    sort-by="id"
+    class="elevation-1"
+  >
+    <template v-slot:top>
+      <v-toolbar flat>
+        <v-dialog v-model="dialog" max-width="520px">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn color="teal" dark class="mb-2" v-bind="attrs" v-on="on">
+              ADD NEW COST <v-icon>mdi-plus</v-icon>
+            </v-btn>
+          </template>
+          <v-card>
+            <v-card-title>
+              <span class="text-h5">{{ formTitle }}</span>
+            </v-card-title>
+            <v-card-text>
+              <v-container>
+                <v-row>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field
+                      v-model="editedItem.id"
+                      label="ID"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-select
+                      v-model="editedItem.category"
+                      :items="options"
+                      label="Category"
+                    ></v-select>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field
+                      type="date"
+                      v-model="editedItem.date"
+                      label="Date"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field
+                      type="number"
+                      v-model="editedItem.value"
+                      label="Value"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field
+                      v-model="editedItem.category"
+                      label="Input NEW Category"
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="teal" text @click="close"> Cancel </v-btn>
+              <v-btn
+                color="teal"
+                text
+                @click="save"
+                v-bind:disabled="
+                  editedItem.category === '' ||
+                  editedItem.value < 0 ||
+                  editedItem.value === '' ||
+                  editedItem.date === ''
+                "
               >
-                ADD New Caterory
-              </button>
-              <input
-                class="add__text--cat"
-                placeholder="Input New Category"
-                v-model="categoryNew"
-                type="text"
-              />
-            </div>
-            <p class="err" v-show="visible">
-              ERROR!<br />This category has been added.<br />Please enter a new
-              one!
-            </p>
-          </div>
-        </div>
-      </div>
-      <div class="list">
-        <p class="head__text-bold">ID</p>
-        <p class="head__text-bold">Date</p>
-        <p class="head__text-bold">Category</p>
-        <p class="head__text-bold">Value</p>
-        <p class="head__text-bold">Menu</p>
-      </div>
-      <div class="list" v-for="(item, idx) in items" :key="idx">
-        <p class="head__text">{{ item.id }}</p>
-        <p class="head__text">{{ item.date }}</p>
-        <p class="head__text">{{ item.category }}</p>
-        <p class="head__text">{{ item.value }}</p>
-        <p class="head__text context" @click="onClickContextItem($event, item)">
-          ...
-        </p>
-      </div>
-    </div>
-  </div>
+                Save
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+        <v-spacer></v-spacer>
+        <v-dialog v-model="dialogDelete" max-width="560px">
+          <v-card>
+            <v-card-title class="text-h5"
+              >Are you sure you want to delete this Payment?</v-card-title
+            >
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="teal" text @click="closeDelete">Cancel</v-btn>
+              <v-btn color="teal" text @click="deleteItemConfirm">OK</v-btn>
+              <v-spacer></v-spacer>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-toolbar>
+    </template>
+    <template v-slot:item.actions="{ item }">
+      <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
+      <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+    </template>
+  </v-data-table>
 </template>
 
 <script>
 export default {
   name: "PaymentsDisplay",
-  data() {
-    return {
+  data: () => ({
+    dialog: false,
+    dialogDelete: false,
+    headers: [
+      {
+        text: "ID#",
+        align: "start",
+        sortable: false,
+        value: "id",
+      },
+      { text: "Date", value: "date" },
+      { text: "Category", value: "category" },
+      { text: "Value", value: "value" },
+      { text: "Actions", value: "actions", sortable: false },
+    ],
+    editedIndex: -1,
+    editedItem: {
+      id: 13,
       date: "",
       category: "",
-      categoryNew: "",
-      value: "",
-      checked: false,
-      visible: false,
-      editData: {},
-    };
-  },
+      value: 0,
+    },
+    defaultItem: {
+      id: 13,
+      date: "",
+      category: "",
+      value: 0,
+    },
+    counter: 0,
+  }),
 
   props: {
     items: {
@@ -97,76 +140,65 @@ export default {
   },
 
   computed: {
-    getCurrentDate() {
-      const today = new Date();
-      let day = today.getDate();
-      const m = today.getMonth() + 1;
-      const y = today.getFullYear();
-      if (day < 10) day = "0" + day;
-      return `${y}-${m}-${day}`;
+    formTitle() {
+      return this.editedIndex === -1 ? "New Payment" : "Edit Payment";
     },
     options() {
       return this.$store.getters.getCategoryList;
     },
   },
+
+  watch: {
+    dialog(val) {
+      val || this.close();
+    },
+    dialogDelete(val) {
+      val || this.closeDelete();
+    },
+  },
+
   methods: {
-    deleteItem(item) {
-      this.$store.commit("deletePayment", item);
-    },
-
     editItem(item) {
-      this.editData = {
-        id: item.id,
-        date: this.date || this.getCurrentDate,
-        category: item.category,
-        value: item.value,
-      };
+      this.editedIndex = this.items.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.dialog = true;
     },
 
-    onClickContextItem(event, item) {
-      const items = [
-        {
-          text: "Edit",
-          action: () => {
-            this.editItem(item);
-            this.checked = true;
-          },
-        },
-        {
-          text: "Delete",
-          action: () => {
-            this.deleteItem(item);
-          },
-        },
-      ];
-      this.$context.show({ event, items });
+    deleteItem(item) {
+      this.editedIndex = this.items.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.dialogDelete = true;
     },
-    addNewCategory() {
-      const data = this.categoryNew;
-      let check = this.options.every(function (el) {
-        return data !== el;
+
+    deleteItemConfirm() {
+      this.items.splice(this.editedIndex, 1);
+      this.closeDelete();
+    },
+
+    close() {
+      this.dialog = false;
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem);
+        this.editedIndex = -1;
       });
-      if (check == true) {
-        this.visible = false;
-        this.options.push(data);
-        this.$emit("addDataToCategoryList", this.data);
+    },
+
+    closeDelete() {
+      this.dialogDelete = false;
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem);
+        this.editedIndex = -1;
+      });
+    },
+
+    save() {
+      if (this.editedIndex > -1) {
+        Object.assign(this.items[this.editedIndex], this.editedItem);
       } else {
-        this.visible = true;
+        this.items.push(this.editedItem);
+        this.defaultItem.id = this.defaultItem.id + 1;
       }
-    },
-    btnFormClose() {
-      this.checked = false;
-    },
-    onEditClick() {
-      this.editData = {
-        id: this.editData.id,
-        date: this.date || this.getCurrentDate,
-        category: this.category,
-        value: this.value,
-      };
-      this.$store.commit("editDataToPaymentsList", this.editData);
-      this.visible = false;
-      this.checked = false;
+      this.close();
     },
   },
   mounted() {
@@ -176,79 +208,3 @@ export default {
   },
 };
 </script>
- 
-<style lang="scss" scoped>
-.item {
-  font-weight: 100;
-  position: relative;
-}
-.list {
-  display: flex;
-  justify-content: space-between;
-  border-bottom: 1px #00a89b solid;
-  max-width: 50%;
-}
-
-.head__text-bold {
-  font-weight: bold;
-}
-
-.context {
-  cursor: pointer;
-}
-
-.add__form {
-  display: flex;
-  flex-direction: column;
-  width: 80%;
-  border: 2px #00a89b solid;
-  padding: 10px;
-  box-shadow: 0.1em 0.1em 0.5em 0.5em rgba(81, 90, 90, 0.2);
-}
-
-.add__text {
-  margin-bottom: 5px;
-}
-
-.add__text--cat {
-  margin-top: 5px;
-  width: 50%;
-}
-.block__for__add {
-  position: absolute;
-  left: 500px;
-  top: 160px;
-  display: flex;
-  align-items: center;
-  background-color: white;
-  z-index: 1;
-}
-
-.btn__form--cat {
-  background-color: #00a89b;
-  color: #90f4f0;
-  padding: 5px 5px;
-  margin: 5px 0 0 5px;
-  width: 40%;
-  cursor: pointer;
-}
-.btn__form--close {
-  background-color: #00a89b;
-  color: red;
-  padding: 5px;
-  margin: 5px 5px;
-  width: 40%;
-  cursor: pointer;
-}
-.err {
-  color: red;
-  font-family: Arial, Helvetica, sans-serif;
-  font-weight: bold;
-}
-
-.new__cat {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-</style>

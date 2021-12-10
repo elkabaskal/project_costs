@@ -41,17 +41,6 @@ const router = new VueRouter({
     routes
 })
 
-/* const userIsAuth = true
-
-router.beforeEach((to, from, next) => {
-    if (to.name !== 'NotFound' && !userIsAuth) {
-        next({
-            name: 'NotFound'
-        })
-    } else {
-        next()
-    }
-}) */
 
 const getTitleByRoutes = routeName => {
     return {

@@ -1,47 +1,32 @@
 <template>
-  <div class="container">
-    <header>My Personal Costs</header>
-    <main>
-      <add-payment-form @addNewPayment="onDataPaymentAdd" />
+  <v-row>
+    <v-col>
+      <div class="text-h4 text-sm-h3 mb-8">My personal Cost</div>
       <payments-display :items="currentElements" />
       <p class="total">Total: {{ getSumValue }}</p>
-      <pagination
-        :cur="page"
-        :n="n"
-        :length="paymentsList.length"
-        @paginate="onChangePage"
-      />
-    </main>
-  </div>
+    </v-col>
+    <v-col> CHART </v-col>
+  </v-row>
 </template>
 
 <script>
-import AddPaymentForm from "../components/AddPaymentForm.vue";
 import PaymentsDisplay from "../components/PaymentsDisplay.vue";
-import Pagination from "../components/Pagination.vue";
 import { mapMutations, mapGetters, mapActions } from "vuex";
 
 export default {
   name: "Dashboard",
   components: {
     PaymentsDisplay,
-    AddPaymentForm,
-    Pagination,
   },
   props: {},
   data() {
     return {
-      page: 1,
-      n: 7,
       type: String,
     };
   },
   computed: {
     currentElements() {
-      return this.$store.getters.getPaymnetsList.slice(
-        this.n * (this.page - 1),
-        this.n * (this.page - 1) + this.n
-      );
+      return this.$store.getters.getPaymnetsList;
     },
     ...mapGetters({
       getSumValue: "getFullPaymentValue",
@@ -71,18 +56,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.container {
-  max-width: 1040px;
-  margin: 0 auto;
-}
-header {
-  text-align: left;
-}
-
-.total {
-  margin-top: 10px;
-  text-align: center;
-}
-</style>
 
