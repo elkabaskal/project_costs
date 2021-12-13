@@ -1,10 +1,10 @@
 <template>
-  <div>About App</div>
+  <div>Error404...Page not found</div>
 </template>
 
 <script>
 export default {
-  name: "About",
+  name: "NotFound",
 };
 </script>
 
