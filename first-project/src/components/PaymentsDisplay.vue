@@ -108,7 +108,7 @@ export default {
       {
         text: "ID#",
         align: "start",
-        sortable: false,
+        sortable: true,
         value: "id",
       },
       { text: "Date", value: "date" },
@@ -201,6 +201,7 @@ export default {
       this.close();
     },
   },
+
   mounted() {
     if (!this.category?.length) {
       this.$store.dispatch("fetchCategory");

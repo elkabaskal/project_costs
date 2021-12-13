@@ -6,15 +6,13 @@ import modal from './plugins/ModalWindow'
 import context from './plugins/ContextWindow'
 import vuetify from './plugins/vuetify'
 
-
 Vue.config.productionTip = false
 Vue.use(modal)
 Vue.use(context)
-
 
 new Vue({
     render: h => h(App),
     store,
     vuetify,
-    router
+    router,
 }).$mount('#app')
